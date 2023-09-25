@@ -3,3 +3,6 @@
 db-data
 
 myapp
+
+
+*.DS_Store
