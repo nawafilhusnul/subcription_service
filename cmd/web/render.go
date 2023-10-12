@@ -33,7 +33,6 @@ func (app *Config) render(w http.ResponseWriter, r *http.Request, t string, td *
 	}
 
 	var templateSlice []string
-
 	templateSlice = append(templateSlice, fmt.Sprintf("%s/%s", pathToTemplates, t))
 
 	for _, x := range partials {
@@ -51,7 +50,7 @@ func (app *Config) render(w http.ResponseWriter, r *http.Request, t string, td *
 		return
 	}
 
-	if err = tmpl.Execute(w, app.AddDefaultData(td, r)); err != nil {
+	if err := tmpl.Execute(w, app.AddDefaultData(td, r)); err != nil {
 		app.ErrorLog.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -62,7 +61,6 @@ func (app *Config) AddDefaultData(td *TemplateData, r *http.Request) *TemplateDa
 	td.Flash = app.Session.PopString(r.Context(), "flash")
 	td.Warning = app.Session.PopString(r.Context(), "warning")
 	td.Error = app.Session.PopString(r.Context(), "error")
-
 	if app.IsAuthenticated(r) {
 		td.Authenticated = true
 		user, ok := app.Session.Get(r.Context(), "user").(data.User)
@@ -72,7 +70,6 @@ func (app *Config) AddDefaultData(td *TemplateData, r *http.Request) *TemplateDa
 			td.User = &user
 		}
 	}
-
 	td.Now = time.Now()
 
 	return td
